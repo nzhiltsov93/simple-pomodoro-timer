@@ -154,5 +154,26 @@ class ViewController: UIViewController {
         shapeLayer.beginTime = timeSincePause
     }
     
+    // MARK: - Action
+    
+    @objc private func startButtonPressed() {
+        if !isStarted {
+            basicAnimation()
+            startButton.setImage(pauseButton, for: .normal)
+            createTimer()
+            isStarted = true
+        } else if isPaused {
+            startButton.setImage(playButton, for: .normal)
+            timer.invalidate()
+            pauseAnimation()
+            isPaused = false
+        } else {
+            createTimer()
+            startButton.setImage(pauseButton, for: .normal)
+            resumeAnimation()
+            isPaused = true
+        }
+    }
+    
 }
 
