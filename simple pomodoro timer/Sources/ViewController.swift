@@ -31,12 +31,17 @@ class ViewController: UIViewController {
         let button = UIButton()
         button.setImage(playButton, for: .normal)
         button.tintColor = .red
+        button.addTarget(self, action: #selector(startButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLayout()
+        view.backgroundColor = .white
+        timerLabel.text = convertTimeToStringFormat(time: TimeInterval(duration))
+        createShapeLayer()
         setupLayout()
         
     }
@@ -49,12 +54,12 @@ class ViewController: UIViewController {
         
         timerLabel.snp.makeConstraints{ make in
             make.centerX.equalTo(view)
-            make.top.equalTo(view.snp.centerY).multipliedBy(0.85)
+            make.top.equalTo(view.snp.centerY).multipliedBy(0.8)
         }
         
         startButton.snp.makeConstraints{ make in
             make.centerX.equalTo(view)
-            make.top.equalTo(timerLabel.snp.centerY).multipliedBy(1.2)
+            make.top.equalTo(timerLabel.snp.centerY).multipliedBy(1.3)
         }
     }
     
@@ -67,7 +72,6 @@ class ViewController: UIViewController {
         if duration == 0 && !isWorkTime{
             duration = 10000
             timer.invalidate()
-            view.backgroundColor = UIColor(named: "restView")
             shapeLayer.strokeColor = UIColor.green.cgColor
             shapeLayer.speed = 1.07
             startButton.setImage(playButton, for: .normal)
@@ -79,7 +83,6 @@ class ViewController: UIViewController {
         } else if duration == 0 && isWorkTime {
             duration = 25000
             timer.invalidate()
-            view.backgroundColor = UIColor(named: "workingView")
             shapeLayer.strokeColor = UIColor.red.cgColor
             startButton.setImage(playButton, for: .normal)
             startButton.tintColor = .red
