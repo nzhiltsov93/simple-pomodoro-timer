@@ -58,5 +58,59 @@ class ViewController: UIViewController {
         }
     }
     
+    // MARK: - Create ShapeLayer
+    
+    private func createShapeLayer() {
+        let trackerLayer = CAShapeLayer()
+        
+        let circularPath = UIBezierPath(arcCenter: view.center,
+                                        radius: 150,
+                                        startAngle: -CGFloat.pi / 2,
+                                        endAngle: 2 * CGFloat.pi,
+                                        clockwise: true)
+        
+        trackerLayer.path = circularPath.cgPath
+        trackerLayer.lineCap = CAShapeLayerLineCap.round
+        trackerLayer.lineWidth = 15
+        trackerLayer.fillColor = UIColor.clear.cgColor
+        trackerLayer.strokeColor = UIColor.lightGray.cgColor
+        view.layer.addSublayer(trackerLayer)
+        
+        shapeLayer.path = circularPath.cgPath
+        shapeLayer.lineCap = CAShapeLayerLineCap.round
+        shapeLayer.lineWidth = 15
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.red.cgColor
+        shapeLayer.strokeEnd = 0
+        view.layer.addSublayer(shapeLayer)
+    }
+    
+    // MARK: - Animation
+    
+    private func basicAnimation() {
+        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        basicAnimation.toValue = 1
+        basicAnimation.speed = 1
+        basicAnimation.duration = CFTimeInterval(duration/815)
+        basicAnimation.fillMode = CAMediaTimingFillMode.forwards
+        basicAnimation.isRemovedOnCompletion = false
+        shapeLayer.add(basicAnimation, forKey: "basicAnimation")
+    }
+    
+    private func pauseAnimation() {
+        let pausedTime = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
+        shapeLayer.speed = 0
+        shapeLayer.timeOffset = pausedTime
+    }
+    
+    private func resumeAnimation() {
+        let pausedTime = shapeLayer.timeOffset
+        shapeLayer.speed = 1
+        shapeLayer.timeOffset = 0
+        shapeLayer.beginTime = 0
+        let timeSincePause = shapeLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        shapeLayer.beginTime = timeSincePause
+    }
+    
 }
 
