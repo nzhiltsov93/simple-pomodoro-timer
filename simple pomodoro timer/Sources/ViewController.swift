@@ -37,9 +37,26 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLayout()
         
     }
 
-
+    // MARK: - Setup
+    
+    private func setupLayout() {
+        view.addSubview(timerLabel)
+        view.addSubview(startButton)
+        
+        timerLabel.snp.makeConstraints{ make in
+            make.centerX.equalTo(view)
+            make.top.equalTo(view.snp.centerY).multipliedBy(0.85)
+        }
+        
+        startButton.snp.makeConstraints{ make in
+            make.centerX.equalTo(view)
+            make.top.equalTo(timerLabel.snp.centerY).multipliedBy(1.2)
+        }
+    }
+    
 }
 
