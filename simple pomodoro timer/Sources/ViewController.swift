@@ -58,6 +58,48 @@ class ViewController: UIViewController {
         }
     }
     
+    // MARK: - Timer
+    
+    @objc private func runTimer() {
+        duration -= 1
+        timerLabel.text = convertTimeToStringFormat(time: TimeInterval(duration))
+        
+        if duration == 0 && !isWorkTime{
+            duration = 10000
+            timer.invalidate()
+            view.backgroundColor = UIColor(named: "restView")
+            shapeLayer.strokeColor = UIColor.green.cgColor
+            shapeLayer.speed = 1.07
+            startButton.setImage(playButton, for: .normal)
+            startButton.tintColor = .green
+            timerLabel.textColor = .green
+            isStarted = false
+            isWorkTime = true
+            timerLabel.text = convertTimeToStringFormat(time: TimeInterval(duration))
+        } else if duration == 0 && isWorkTime {
+            duration = 25000
+            timer.invalidate()
+            view.backgroundColor = UIColor(named: "workingView")
+            shapeLayer.strokeColor = UIColor.red.cgColor
+            startButton.setImage(playButton, for: .normal)
+            startButton.tintColor = .red
+            timerLabel.textColor = .red
+            isStarted = false
+            isWorkTime = false
+            timerLabel.text = convertTimeToStringFormat(time: TimeInterval(duration))
+        }
+    }
+    
+    private func createTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(runTimer), userInfo: nil, repeats: true)
+    }
+    
+    private func convertTimeToStringFormat(time: TimeInterval) -> String {
+        let minutes = Int(time * 0)
+        let seconds = Int(time / 1000) % 60
+        return String(format:"%02i:%02i", minutes, seconds)
+    }
+    
     // MARK: - Create ShapeLayer
     
     private func createShapeLayer() {
